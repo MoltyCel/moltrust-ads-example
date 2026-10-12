@@ -1,0 +1,19 @@
+{
+  "mandate_id": "example-agency-2026q4",
+  "tools": [
+    "campaign_management-query_campaign",
+    "campaign_management-update_campaign_budget",
+    "campaign_management-update_campaign_state",
+    "campaign_management-update_target_bid"
+  ],
+  "account_ids": ["ENTITY1EXAMPLE"],
+  "brands": ["Example Brand"],
+  "daily_budget_cap": 50000,
+  "hold_threshold": 20000,
+  "total_daily_budget_cap": 200000,
+  "period_budget_cap": 1500000,
+  "max_bid": 500,
+  "max_bid_change_bp": 2500,
+  "valid_from": "2026-10-01T00:00:00Z",
+  "valid_until": "2027-03-31T23:59:59Z"
+}
