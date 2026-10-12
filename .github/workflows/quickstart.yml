@@ -16,3 +16,5 @@ jobs:
           python-version: "3.12"
       - run: python -m venv .venv && .venv/bin/pip install -r requirements.txt
       - run: .venv/bin/python quickstart.py
+        env:
+          MOLTRUST_API_KEY: ${{ secrets.MOLTRUST_API_KEY }}

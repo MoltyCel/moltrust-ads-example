@@ -18,8 +18,16 @@ git clone https://github.com/MoltyCel/moltrust-ads-example
 cd moltrust-ads-example
 python -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
+
+# free API key (one ad account, 1,000 checks a month); shown once
+curl -s -X POST https://api.moltrust.ch/auth/signup \
+     -H 'Content-Type: application/json' -d '{"email": "you@agency.com"}'
+export MOLTRUST_API_KEY=...      # the api_key from the answer
+
 python quickstart.py
 ```
+
+You can also get the key on <https://moltrust.ch/ads/pricing.html>.
 
 Expected output, four calls against one mandate:
 

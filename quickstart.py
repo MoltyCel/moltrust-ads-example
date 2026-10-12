@@ -2,6 +2,7 @@
 
     python -m venv .venv && . .venv/bin/activate
     pip install -r requirements.txt
+    export MOLTRUST_API_KEY=...      # free key: https://moltrust.ch/ads/pricing.html
     python quickstart.py
 
 The script creates an agency key on first run (agency_key.hex, keep it private), builds a
@@ -9,7 +10,10 @@ mandate from profile.json and asks api.moltrust.ch for verdicts on four tool cal
 Amazon call itself is `my_ads_call.py`: a stub until you plug in your own MCP client.
 Nothing here sends anything to Amazon, and MolTrust never sees an Amazon credential.
 
-Set MOLTRUST_API_KEY to use your key; without it the script identifies by the agency DID.
+MOLTRUST_API_KEY is required. A free key covers one ad account and 1,000 checks a month:
+
+    curl -X POST https://api.moltrust.ch/auth/signup -H 'Content-Type: application/json' \
+         -d '{"email": "you@agency.com"}'
 """
 import json
 import os
@@ -82,8 +86,12 @@ def main():
     key = agency_key()
     base = os.environ.get("MOLTRUST_URL", "https://api.moltrust.ch")
     api_key = os.environ.get("MOLTRUST_API_KEY")
-    client = (EnforceClient(base, api_key=api_key) if api_key
-              else EnforceClient(base, did=agency_did(key)))
+    if not api_key:
+        sys.stderr.write("MOLTRUST_API_KEY is not set. Get a free key at "
+                         "https://moltrust.ch/ads/pricing.html or with POST "
+                         "https://api.moltrust.ch/auth/signup, then export it.\n")
+        return 2
+    client = EnforceClient(base, api_key=api_key)
     guard = AmazonAdsGuard(client, load_profile(key))
 
     print(f"agency {agency_did(key)} -> {base}\n")
